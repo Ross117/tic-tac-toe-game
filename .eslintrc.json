@@ -1,0 +1,11 @@
+{
+    "extends": "airbnb-base",
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "script"
+    },
+    "rules": {
+      "linebreak-style": ["error", "windows"],
+      "strict": ["error", "global"]
+    }
+}
