@@ -2,7 +2,7 @@
 
 const game = (function setupGame() {
   // update in response to user & computer actions
-  const stateObj = {
+  const state = {
     // remove options when played
     options: [1, 2, 3, 4, 5, 6, 7, 8, 9],
     // noughts or crosses, use the properties to update the board
@@ -26,6 +26,8 @@ const game = (function setupGame() {
     let winningCombo = false;
     let i = 1;
 
+    if (playerArr.length < 3) return false;
+
     do {
       if (playerArr.indexOf(winningCombos[i - 1][0]) !== -1 &&
         playerArr.indexOf(winningCombos[i - 1][1]) !== -1 &&
@@ -42,56 +44,119 @@ const game = (function setupGame() {
   // need to alternate turns between user & computer
 
   const computerPlay = () => {
-    const optionsLnth = stateObj.options.length;
     let computerSelection;
-    let computerHasWon;
 
-    const getRandomInt = max => Math.floor(Math.random() * Math.floor(max));
+    const getRandomInt = max => Math.floor(Math.random() * max);
 
-    // 1. if first go, random pick from remaining values in options arr
-    if (stateObj.computerPlays.length === 0) {
-      // select random int from option array index range
-      computerSelection = stateObj.options[getRandomInt(optionsLnth)];
-    }
+    const checkForPriorityMv = (playerHist) => {
+      let nxtMv = null;
+      let i = 1;
 
-    // 2. if computer is just 1 square away, and that square is available, pick that
-    // 3. need to block user if they're 1 square away from winning
-    // 4. if computer can move to being just 1 away from a winning combination still in play,
+      do {
+        let counter = 0;
+        winningCombos[i - 1].forEach((val) => {
+          if (playerHist.indexOf(val) !== -1) counter += 1;
+        });
+        if (counter === 2) {
+          const availableMvs = winningCombos[i - 1]
+            .filter(val => state.options.indexOf(val) !== -1);
+          if (availableMvs.length === 1) [nxtMv] = availableMvs;
+        }
+        i += 1;
+      } while (nxtMv === null && i <= winningCombos.length);
+
+      return nxtMv;
+    };
+
+    const pickRegularMv = (playerHist) => {
+      let nxtMv = null;
+      let i = 1;
+      const choices = [];
+
+      const pickBestOption = (options) => {
+        const countArr = [];
+
+        options.forEach((val) => {
+          let counter = 0;
+          options.forEach((value, index) => {
+            if (val === options[index]) counter += 1;
+          });
+          countArr.push([val, counter]);
+        });
+
+        countArr.sort((a, b) => b[1] - a[1]);
+
+        return countArr[0][0];
+      };
+
+      do {
+        let counter = 0;
+        winningCombos[i - 1].forEach((val) => {
+          if (playerHist.indexOf(val) !== -1) counter += 1;
+        });
+        if (counter === 1) {
+          const availableMvs = winningCombos[i - 1]
+            .filter(val => state.options.indexOf(val) !== -1);
+          if (availableMvs.length === 2) {
+            choices.push(...availableMvs);
+          }
+        }
+        i += 1;
+      } while (i <= winningCombos.length);
+
+      if (choices.length >= 1) {
+        nxtMv = pickBestOption(choices);
+      }
+
+      return nxtMv;
+    };
+
+
+    if (state.computerPlays.length === 0 && state.computerPlays.length === 0) {
+      // 1. at the start of the game, 5 leaves the most winning combos open
+      computerSelection = 5;
+    } else if (state.computerPlays.length === 0) {
+      // 2. focus on blocking the user already?
+      computerSelection = pickRegularMv(state.userPlays);
+    // 3. if computer is just 1 square away, and that square is available, pick that
+    } else if (checkForPriorityMv(state.computerPlays) !== null) {
+      computerSelection = checkForPriorityMv(state.computerPlays);
+    // 4. need to block user if they're 1 square away from winning
+    } else if (checkForPriorityMv(state.userPlays) !== null) {
+      computerSelection = checkForPriorityMv(state.userPlays);
+    // 5. if computer can move to being just 1 away from a winning combination still in play,
     // pick that option. If there's more than 1 possibility,
-    // random pick (or move which blocks user?)
-    // 5. else random pick from remaining values in options arr (or move which blocks user?)
-    computerSelection = stateObj.options[getRandomInt(optionsLnth)];
-    // 6. update computerPlays array
-    stateObj.computerPlays.push(computerSelection);
-    // 7. update board
-    // 8. Check if computer has won
-    if (stateObj.computerPlays.length >= 3) {
-      computerHasWon = checkforWinner('Computer', stateObj.computerPlays);
-    }
-    if (computerHasWon) return;
-    // 9. remove selection from options array
-    const ind = stateObj.options.indexOf(computerSelection);
-    stateObj.options.splice(ind, 1);
-  // 10. If computer has not won, switch to user
+    // choose option which leaves open largest amount of winning combinations
+    } else if (pickRegularMv(state.computerPlays) !== null) {
+      computerSelection = pickRegularMv(state.computerPlays);
+    // 6. Otherwise, block the best option for the user
+    } else if (pickRegularMv(state.userPlays) !== null) {
+      computerSelection = pickRegularMv(state.userPlays);
+    } else computerSelection = state.options[getRandomInt(state.options.length)];
+
+    // 7. update computerPlays array
+    state.computerPlays.push(computerSelection);
+    // 8. update board
+    // 9. Check if computer has won
+    if (checkforWinner('computer', state.computerPlays)) return;
+    // 10. remove selection from options array
+    const ind = state.options.indexOf(computerSelection);
+    state.options.splice(ind, 1);
+  // 11. If computer has not won, switch to user
   };
 
   // make sure user can only select one of the remaining options
   // handle this in HTML I think, disable taken squares
   const userPlay = (userSelection) => {
-    let playerHasWon;
     // 1. update userPlays array
-    stateObj.userPlays.push(userSelection);
+    state.userPlays.push(userSelection);
     // 2. update board
     // 3. check if user has won
-    if (stateObj.userPlays.length >= 3) {
-      playerHasWon = checkforWinner('user', stateObj.userPlays);
-    }
-    // 4. exit if user has won
-    if (playerHasWon) return;
-    // 5. remove selection from options array
-    const ind = stateObj.options.indexOf(userSelection);
-    stateObj.options.splice(ind, 1);
-    // 6. make computer play
+    if (checkforWinner('user', state.userPlays)) return;
+    // 4. remove selection from options array
+    const ind = state.options.indexOf(userSelection);
+    state.options.splice(ind, 1);
+    // 5. make computer play
     computerPlay();
   };
 
