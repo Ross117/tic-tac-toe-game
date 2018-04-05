@@ -10,11 +10,6 @@ const game = (function setupGame() {
   const winningCombos = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 5, 9],
     [3, 5, 7], [1, 4, 7], [2, 5, 8], [3, 6, 9]];
 
-  // fires when user clicks 'play' button
-  const selectIdentifier = () => {
-
-  };
-
   const checkforWinner = (player, playerArr) => {
     let winningCombo = false;
     let i = 1;
@@ -65,6 +60,7 @@ const game = (function setupGame() {
     const pickRegularMv = (playerHist) => {
       let nxtMv = null;
       let i = 1;
+      let availableMvs = [];
       const choices = [];
 
       // pick the move which leaves the most winning combinations open
@@ -84,35 +80,45 @@ const game = (function setupGame() {
         return countArr[0][0];
       };
 
-      do {
-        let counter = 0;
-        winningCombos[i - 1].forEach((val) => {
-          if (playerHist.indexOf(val) !== -1) counter += 1;
-        });
-        if (counter === 1) {
-          const availableMvs = winningCombos[i - 1]
-            .filter(val => state.options.indexOf(val) !== -1);
-          if (availableMvs.length === 2) {
+      if (playerHist.length > 0) {
+        do {
+          let counter = 0;
+          winningCombos[i - 1].forEach((val) => {
+            if (playerHist.indexOf(val) !== -1) counter += 1;
+          });
+          if (counter === 1) {
+            availableMvs = winningCombos[i - 1]
+              .filter(val => state.options.indexOf(val) !== -1);
+            if (availableMvs.length === 2) {
+              choices.push(...availableMvs);
+            }
+          }
+          i += 1;
+        } while (i <= winningCombos.length);
+
+        if (choices.length >= 1) {
+          nxtMv = pickBestOption(choices);
+        }
+      } else {
+        winningCombos.forEach((arr) => {
+          availableMvs = arr
+            .filter(value => state.options.indexOf(value) !== -1);
+          if (availableMvs.length === 3) {
             choices.push(...availableMvs);
           }
-        }
-        i += 1;
-      } while (i <= winningCombos.length);
-
-      if (choices.length >= 1) {
+        });
         nxtMv = pickBestOption(choices);
       }
 
       return nxtMv;
     };
 
-
     if (state.moves.computer.length === 0 && state.moves.user.length === 0) {
       // 1. at the start of the game, 5 leaves the most winning combos open
       computerSelection = 5;
     } else if (state.moves.computer.length === 0) {
-      // 2. focus on blocking the user already?
-      computerSelection = pickRegularMv(state.moves.user);
+      // 2. computer selects the best move
+      computerSelection = pickRegularMv(state.moves.computer);
     // 3. if computer is just 1 square away, and that square is available, pick that
     } else if (checkForPriorityMv(state.moves.computer) !== null) {
       computerSelection = checkForPriorityMv(state.moves.computer);
@@ -130,7 +136,8 @@ const game = (function setupGame() {
     } else computerSelection = state.options[getRandomInt(state.options.length)];
 
     // 8. update board
-    document.querySelector(`[id='${computerSelection}']`).innerText = state.identifers.computer;
+    document.querySelector(`[id='${computerSelection}']`)
+      .innerText = state.identifers.computer;
     // 9. update computerPlays array
     state.moves.computer.push(computerSelection);
     // 10. Check if computer has won
@@ -162,14 +169,16 @@ const game = (function setupGame() {
     computerPlay();
   };
 
+  // fires when user clicks 'play' button
+  const selectIdentifier = () => {
+    const sqrs = document.querySelectorAll('.sqr');
+
+    Array.from(sqrs).forEach((sqr) => {
+      sqr.addEventListener('click', userPlay);
+    });
+  };
+
   return {
     selectIdentifier,
-    userPlay,
   };
 }());
-
-const sqrs = document.querySelectorAll('.sqr');
-
-Array.from(sqrs).forEach((sqr) => {
-  sqr.addEventListener('click', game.userPlay);
-});
