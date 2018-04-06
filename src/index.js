@@ -3,7 +3,7 @@
 const game = (function setupGame() {
   const state = {
     options: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    identifers: { computer: 'O', user: 'X' },
+    identifers: { computer: '', user: '' },
     moves: { computer: [], user: [] },
   };
 
@@ -161,24 +161,36 @@ const game = (function setupGame() {
     // 4. remove selection from options array
     const ind = state.options.indexOf(numericVal);
     state.options.splice(ind, 1);
-
-    // console.log(state.moves.user);
-    // console.log(state.options);
-
     // 5. make computer play
     computerPlay();
   };
 
-  // fires when user clicks 'play' button
-  const selectIdentifier = () => {
+  const startGame = () => {
     const sqrs = document.querySelectorAll('.sqr');
+
+    const selectIdentifier = () => {
+      state.identifers.computer = 'O';
+      state.identifers.user = 'X';
+    };
+
+    const determineStarter = () => {
+      const randomNum = Math.round(Math.random());
+
+      if (randomNum === 1) computerPlay();
+    };
+
+    selectIdentifier();
 
     Array.from(sqrs).forEach((sqr) => {
       sqr.addEventListener('click', userPlay);
     });
+
+    determineStarter();
   };
 
   return {
-    selectIdentifier,
+    startGame,
   };
 }());
+
+document.querySelector('.playBtn').addEventListener('click', game.startGame);
