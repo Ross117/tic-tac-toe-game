@@ -2,13 +2,15 @@
 
 const game = (function setupGame() {
   const state = {
-    options: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    options: [],
     identifers: { computer: '', user: '' },
     moves: { computer: [], user: [] },
   };
 
   const winningCombos = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 5, 9],
     [3, 5, 7], [1, 4, 7], [2, 5, 8], [3, 6, 9]];
+
+  const $outcomeMsg = document.querySelector('.outcomeMsg');
 
   const checkforWinner = (player, playerArr) => {
     let winningCombo = false;
@@ -24,7 +26,10 @@ const game = (function setupGame() {
       } else i += 1;
     } while (!winningCombo && i <= winningCombos.length);
 
-    if (winningCombo) console.log(`${player} has won!`);
+    if (winningCombo) {
+      if (player === 'computer') $outcomeMsg.innerText = 'The computer has won';
+      else $outcomeMsg.innerText = 'Congratulations, you\'ve won!';
+    }
 
     return winningCombo;
   };
@@ -95,7 +100,6 @@ const game = (function setupGame() {
           }
           i += 1;
         } while (i <= winningCombos.length);
-
         if (choices.length >= 1) {
           nxtMv = pickBestOption(choices);
         }
@@ -145,6 +149,8 @@ const game = (function setupGame() {
     // 11. remove selection from options array
     const ind = state.options.indexOf(computerSelection);
     state.options.splice(ind, 1);
+    // 12. check if the game's over
+    if (state.options.length === 0) $outcomeMsg.innerText = 'Match drawn';
   };
 
   const userPlay = (event) => {
@@ -161,12 +167,26 @@ const game = (function setupGame() {
     // 4. remove selection from options array
     const ind = state.options.indexOf(numericVal);
     state.options.splice(ind, 1);
-    // 5. make computer play
-    computerPlay();
+    // 5. check if the game is drawn. If not, make the computer play.
+    if (state.options.length === 0) $outcomeMsg.innerText = 'Match drawn';
+    else computerPlay();
   };
 
   const startGame = () => {
-    const sqrs = document.querySelectorAll('.sqr');
+    const sqrs = Array.from(document.querySelectorAll('.sqr'));
+
+    const resetGame = () => {
+      $outcomeMsg.innerText = '';
+
+      sqrs.forEach((sqr) => {
+        sqr.innerText = '';
+        sqr.addEventListener('click', userPlay);
+      });
+
+      state.options = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+      state.moves.computer = [];
+      state.moves.user = [];
+    };
 
     const selectIdentifier = () => {
       state.identifers.computer = 'O';
@@ -179,11 +199,9 @@ const game = (function setupGame() {
       if (randomNum === 1) computerPlay();
     };
 
-    selectIdentifier();
+    resetGame();
 
-    Array.from(sqrs).forEach((sqr) => {
-      sqr.addEventListener('click', userPlay);
-    });
+    selectIdentifier();
 
     determineStarter();
   };
