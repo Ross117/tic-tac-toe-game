@@ -3,45 +3,42 @@
 
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <link rel="stylesheet"
-    href="src\style.css">
+  <link rel="stylesheet" href="src\style.css">
   <title>Tic Tac Toe Game</title>
 </head>
 
 <body>
 
-  <div class="container-fluid">
+  <div class="container">
 
-    <h1 class="text-center">Let's play Noughts & Crosses!</h1>
+    <h1>Let's play Noughts & Crosses!</h1>
 
     <div class="board">
-      <div class="row">
-        <div id="1" class="col-sm-2 sqr"></div>
-        <div id="2" class="col-sm-2 sqr"></div>
-        <div id="3" class="col-sm-2 sqr"></div>
+      <div class="boardRow">
+        <div id="1" class="sqr"></div>
+        <div id="2" class="sqr"></div>
+        <div id="3" class="sqr"></div>
       </div>
 
-      <div class="row">
-        <div id="4" class="col-sm-2 sqr"></div>
-        <div id="5" class="col-sm-2 sqr"></div>
-        <div id="6" class="col-sm-2 sqr"></div>
+      <div class="boardRow">
+        <div id="4" class="sqr"></div>
+        <div id="5" class="sqr"></div>
+        <div id="6" class="sqr"></div>
       </div>
 
-      <div class="row">
-        <div id="7" class="col-sm-2 sqr"></div>
-        <div id="8" class="col-sm-2 sqr"></div>
-        <div id="9" class="col-sm-2 sqr"></div>
+      <div class="boardRow">
+        <div id="7" class="sqr"></div>
+        <div id="8" class="sqr"></div>
+        <div id="9" class="sqr"></div>
       </div>
     </div>
 
     <div>
-      <p class="text-center outcomeMsg"></p>
+      <p class="outcomeMsg"></p>
     </div>
 
     <div>
-      <button class="btn playBtn">Play</button>
+      <button class="playBtn">Play</button>
     </div>
 
   </div>

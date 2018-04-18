@@ -1,14 +1,34 @@
-.board {
-  margin: 40px;
+/* media query to make board fill more of a smaller screen? */
+
+/* also see alternative solution for board divs sent by Pete on slack */
+
+.container {
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
 }
 
-.board .col-sm-2 {
-  height: 100px;
-  border: solid black;
-  font-size: 50px;
+h1 {
+  text-align: center;
+}
+
+.sqr {
+  display: inline-block;
+  width: 32%;
+  height: 50px;
+  margin-bottom: 0.25%;
+  box-sizing: border-box;
+  border: 2px solid black;
+  text-align: center;
+  font-size: 250%;
+  vertical-align: top;
 }
 
 .outcomeMsg {
   font-weight: bold;
-  font-size: 25px;
+  font-size: 125%;
+}
+
+.playBtn {
+  font-size: 125%;
 }
