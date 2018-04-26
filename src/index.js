@@ -10,7 +10,7 @@ const game = (function setupGame() {
   const winningCombos = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 5, 9],
     [3, 5, 7], [1, 4, 7], [2, 5, 8], [3, 6, 9]];
 
-  const $outcomeMsg = document.querySelector('.outcomeMsg');
+  const $outcomeMsg = document.querySelector('.outcome-msg');
 
   const checkforWinner = (player, playerArr) => {
     let winningCombo = false;
@@ -159,6 +159,7 @@ const game = (function setupGame() {
     // 1. update board
     if ($targetDiv.innerText === '') $targetDiv.innerText = state.identifers.user;
     else return;
+
     const numericVal = parseInt($targetDiv.id, 10);
     // 2. update userPlays array
     state.moves.user.push(numericVal);
@@ -211,4 +212,4 @@ const game = (function setupGame() {
   };
 }());
 
-document.querySelector('.playBtn').addEventListener('click', game.startGame);
+document.querySelector('.play-btn').addEventListener('click', game.startGame);

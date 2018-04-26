@@ -2,14 +2,18 @@
 
 /* also see alternative solution for board divs sent by Pete on slack */
 
-.container {
-  width: 100%;
-  max-width: 500px;
-  margin: auto;
+body {
+  font-family: sans-serif;
 }
 
 h1 {
   text-align: center;
+}
+
+.board {
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
 }
 
 .sqr {
@@ -24,11 +28,18 @@ h1 {
   vertical-align: top;
 }
 
-.outcomeMsg {
-  font-weight: bold;
-  font-size: 125%;
+.btn-container {
+  width: 50px;
+  margin: 2% auto;
 }
 
-.playBtn {
+.play-btn {
+  font-size: 125%;
+  border-radius: 10px;
+}
+
+.outcome-msg {
+  text-align: center;
+  font-weight: bold;
   font-size: 125%;
 }

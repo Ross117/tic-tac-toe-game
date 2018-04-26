@@ -4,44 +4,38 @@
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="src\style.css">
-  <title>Tic Tac Toe Game</title>
+  <title>Noughts & Crosses Game</title>
 </head>
 
 <body>
 
-  <div class="container">
+  <h1>Let's play Noughts & Crosses!</h1>
 
-    <h1>Let's play Noughts & Crosses!</h1>
-
-    <div class="board">
-      <div class="boardRow">
-        <div id="1" class="sqr"></div>
-        <div id="2" class="sqr"></div>
-        <div id="3" class="sqr"></div>
-      </div>
-
-      <div class="boardRow">
-        <div id="4" class="sqr"></div>
-        <div id="5" class="sqr"></div>
-        <div id="6" class="sqr"></div>
-      </div>
-
-      <div class="boardRow">
-        <div id="7" class="sqr"></div>
-        <div id="8" class="sqr"></div>
-        <div id="9" class="sqr"></div>
-      </div>
+  <div class="board">
+    <div class="board-row">
+      <div id="1" class="sqr"></div>
+      <div id="2" class="sqr"></div>
+      <div id="3" class="sqr"></div>
     </div>
 
-    <div>
-      <p class="outcomeMsg"></p>
+    <div class="board-row">
+      <div id="4" class="sqr"></div>
+      <div id="5" class="sqr"></div>
+      <div id="6" class="sqr"></div>
     </div>
 
-    <div>
-      <button class="playBtn">Play</button>
+    <div class="board-row">
+      <div id="7" class="sqr"></div>
+      <div id="8" class="sqr"></div>
+      <div id="9" class="sqr"></div>
     </div>
-
   </div>
+
+  <div class="btn-container">
+    <button class="play-btn">Play</button>
+  </div>
+
+  <p class="outcome-msg"></p>
 
   <script src="src\index.js"></script>
 
