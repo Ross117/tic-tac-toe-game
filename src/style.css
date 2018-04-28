@@ -28,17 +28,24 @@ h1 {
   vertical-align: top;
 }
 
-.btn-container {
-  width: 50px;
+.form-container {
+  width: 185px;
   margin: 2% auto;
 }
 
+.select-identifier {
+  width: 60px;
+  font-size: 125%;
+}
+
 .play-btn {
+  margin-left: 5px;
+  width: 60px;
   font-size: 125%;
   border-radius: 10px;
 }
 
-.outcome-msg {
+.msg {
   text-align: center;
   font-weight: bold;
   font-size: 125%;

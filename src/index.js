@@ -10,7 +10,7 @@ const game = (function setupGame() {
   const winningCombos = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 5, 9],
     [3, 5, 7], [1, 4, 7], [2, 5, 8], [3, 6, 9]];
 
-  const $outcomeMsg = document.querySelector('.outcome-msg');
+  const $msg = document.querySelector('.msg');
 
   const checkforWinner = (player, playerArr) => {
     let winningCombo = false;
@@ -27,8 +27,8 @@ const game = (function setupGame() {
     } while (!winningCombo && i <= winningCombos.length);
 
     if (winningCombo) {
-      if (player === 'computer') $outcomeMsg.innerText = 'The computer has won';
-      else $outcomeMsg.innerText = 'Congratulations, you\'ve won!';
+      if (player === 'computer') $msg.innerText = 'The computer has won';
+      else $msg.innerText = 'Congratulations, you\'ve won!';
     }
 
     return winningCombo;
@@ -150,7 +150,8 @@ const game = (function setupGame() {
     const ind = state.options.indexOf(computerSelection);
     state.options.splice(ind, 1);
     // 12. check if the game's over
-    if (state.options.length === 0) $outcomeMsg.innerText = 'Match drawn';
+    if (state.options.length === 0) $msg.innerText = 'Match drawn';
+    else $msg.innerText = 'Your turn';
   };
 
   const userPlay = (event) => {
@@ -169,19 +170,23 @@ const game = (function setupGame() {
     const ind = state.options.indexOf(numericVal);
     state.options.splice(ind, 1);
     // 5. check if the game is drawn. If not, make the computer play.
-    if (state.options.length === 0) $outcomeMsg.innerText = 'Match drawn';
-    else computerPlay();
+    if (state.options.length === 0) $msg.innerText = 'Match drawn';
+    else {
+      $msg.innerText = '';
+      computerPlay();
+    }
   };
 
   const startGame = () => {
     const sqrs = Array.from(document.querySelectorAll('.sqr'));
 
     const resetGame = () => {
-      $outcomeMsg.innerText = '';
+      $msg.innerText = '';
 
       sqrs.forEach((sqr) => {
-        sqr.innerText = '';
-        sqr.addEventListener('click', userPlay);
+        const $sqr = sqr;
+        $sqr.innerText = '';
+        $sqr.addEventListener('click', userPlay);
       });
 
       state.options = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -190,14 +195,15 @@ const game = (function setupGame() {
     };
 
     const selectIdentifier = () => {
-      state.identifers.computer = 'O';
-      state.identifers.user = 'X';
+      state.identifers.user = document.querySelector('.select-identifier').value;
+      state.identifers.computer = state.identifers.user === 'O' ? 'X' : 'O';
     };
 
     const determineStarter = () => {
       const randomNum = Math.round(Math.random());
 
       if (randomNum === 1) computerPlay();
+      else $msg.innerText = 'Your turn';
     };
 
     resetGame();
