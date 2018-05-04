@@ -155,7 +155,8 @@ const game = (function setupGame() {
   };
 
   const userPlay = (event) => {
-    const $targetDiv = event.srcElement;
+    // handle cross browser differences in the input event object
+    const $targetDiv = event.srcElement ? event.srcElement : event.target;
 
     // 1. update board
     if ($targetDiv.innerText === '') $targetDiv.innerText = state.identifers.user;
