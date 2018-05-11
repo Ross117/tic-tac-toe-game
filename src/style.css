@@ -1,6 +1,10 @@
 /* media query to make board fill more of a smaller screen? */
 
-/* also see alternative solution for board divs sent by Pete on slack */
+/* also see alternative float solution for board divs sent by Pete on slack */
+
+* {
+ box-sizing: border-box;
+}
 
 body {
   font-family: sans-serif;
@@ -21,7 +25,6 @@ h1 {
   width: 32%;
   height: 50px;
   margin-bottom: 0.50%;
-  box-sizing: border-box;
   border: 2px solid black;
   text-align: center;
   font-size: 250%;
