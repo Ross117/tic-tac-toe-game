@@ -1,6 +1,5 @@
 /* media query to make board fill more of a smaller screen? */
 
-/* also see alternative float solution for board divs sent by Pete on slack */
 
 * {
  box-sizing: border-box;
@@ -18,24 +17,28 @@ h1 {
 
 .board {
   width: 100%;
-  max-width: 500px;
+  max-width: 300px;
   margin: auto;
 }
 
 .sqr {
-  display: inline-block;
-  width: 32%;
-  height: 50px;
-  margin-bottom: 0.50%;
-  border: 2px solid black;
+  float: left;
+  width: 33%;
+  height: 100px;
+  border: 1px solid black;
   text-align: center;
+  line-height: 100px;
   font-size: 250%;
-  vertical-align: top;
+}
+
+.bottomRow {
+  margin-bottom: 20px;
 }
 
 .form-container {
+  clear: left;
   width: 185px;
-  margin: 2% auto;
+  margin: auto;
 }
 
 .select-identifier {
