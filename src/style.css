@@ -6,6 +6,8 @@
  box-sizing: border-box;
 }
 
+/* try out @font-face rule {
+} */
 body {
   font-family: sans-serif;
 }
