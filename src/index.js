@@ -10,6 +10,7 @@ const game = (function setupGame() {
   const winningCombos = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 5, 9],
     [3, 5, 7], [1, 4, 7], [2, 5, 8], [3, 6, 9]];
 
+  const sqrs = Array.from(document.querySelectorAll('.sqr'));
   const $msg = document.querySelector('.msg');
 
   const checkforWinner = (player, playerArr) => {
@@ -29,6 +30,10 @@ const game = (function setupGame() {
     if (winningCombo) {
       if (player === 'computer') $msg.innerText = 'The computer has won';
       else $msg.innerText = 'Congratulations, you\'ve won!';
+      sqrs.forEach((val) => {
+        const sqr = val;
+        sqr.removeEventListener('click', userPlay);
+      });
     }
 
     return winningCombo;
@@ -179,8 +184,6 @@ const game = (function setupGame() {
   };
 
   const startGame = () => {
-    const sqrs = Array.from(document.querySelectorAll('.sqr'));
-
     const resetGame = () => {
       $msg.innerText = '';
 
