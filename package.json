@@ -3,10 +3,8 @@
   "version": "1.0.0",
   "description": "A web-based Tic-Tac-Toe game",
   "main": "index.js",
-  "dependencies": {
-    "eslint": "^4.19.0"
-  },
   "devDependencies": {
+    "eslint": "^4.19.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.9.0"
   },

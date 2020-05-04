@@ -1,5 +1,8 @@
 # dependencies
 /node_modules
 
+# eslint
+.eslintrc.json
+
 # misc
 .vscode
