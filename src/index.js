@@ -1,5 +1,8 @@
 'use strict';
 
+import "core-js/features/array/from";
+import "./style.css"
+
 const game = (function setupGame() {
   const state = {
     options: [],
