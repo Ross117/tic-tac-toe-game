@@ -3,3 +3,5 @@ A noughts and crosses game. Choose which identifier you want to play as, then cl
 Built using JavaScript, HTML and CSS.
 
 A Free Code Camp project.
+
+DECEMBER 2020 UPDATE: I've now added Webpack and Babel to this project. I wanted to learn more about how to configure Webpack from scratch, and I also wanted take advantage of what Babel offers to make sure the project supported IE11. I integrated Babel into Webpack's workflow using babel-loader.
