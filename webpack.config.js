@@ -4,6 +4,7 @@ const webpack = require("webpack");
 module.exports = {
   entry: "./src/index.js",
   mode: "development",
+  target: "es5",
   module: {
     rules: [
       {
@@ -23,9 +24,6 @@ module.exports = {
     path: path.resolve(__dirname, "dist/"),
     publicPath: "/dist/",
     filename: "bundle.js",
-    environment: {
-      arrowFunction: false
-    }
   },
   devServer: {
     contentBase: path.join(__dirname, "public/"),
