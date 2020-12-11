@@ -22,7 +22,10 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist/"),
     publicPath: "/dist/",
-    filename: "bundle.js"
+    filename: "bundle.js",
+    environment: {
+      arrowFunction: false
+    }
   },
   devServer: {
     contentBase: path.join(__dirname, "public/"),
