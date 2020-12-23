@@ -1,5 +1,5 @@
 * {
- box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
@@ -29,7 +29,6 @@ h1 {
   font-weight: bold;
   background-color: #7180CA;
 }
-
 .sqr:hover {
   background-color: #202D6E;
 }
@@ -62,3 +61,5 @@ h1 {
   font-weight: bold;
   font-size: 125%;
 }
+
+/*# sourceMappingURL=style.css.map */

@@ -6,6 +6,7 @@
   "scripts": {
     "build": "webpack --mode development",
     "eslint": "eslint ./src/index.js",
+    "compile:sass": "sass --watch sass/style.scss src/style.css",
     "start": "webpack serve",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -27,6 +28,7 @@
     "core-js": "^3.8.1",
     "css-loader": "^5.0.1",
     "eslint": "^7.15.0",
+    "sass": "^1.30.0",
     "style-loader": "^2.0.0",
     "webpack": "^5.10.0",
     "webpack-cli": "^4.2.0",
