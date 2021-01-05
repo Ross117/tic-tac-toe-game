@@ -30,7 +30,7 @@ const game = (function setupGame() {
     } while (!winningCombo && i <= winningCombos.length);
 
     if (winningCombo) {
-      if (player === 'computer') $msg.innerText = 'The computer has won';
+      if (player === 'computer') $msg.innerText = 'The computer has won!';
       else $msg.innerText = 'Congratulations, you\'ve won!';
       $sqrs.forEach((val) => {
         const sqr = val;
@@ -200,7 +200,7 @@ const game = (function setupGame() {
     };
 
     const selectIdentifier = () => {
-      state.identifers.user = document.querySelector('.select-identifier').value;
+      state.identifers.user = document.querySelector('#select-identifier').value;
       state.identifers.computer = state.identifers.user === 'O' ? 'X' : 'O';
     };
 

@@ -1,65 +1,97 @@
+$colour-russet: rgb(175, 67, 32);
+$colour-amber: rgb(251, 168, 108);
+$colour-cream: rgb(255, 226, 214);
+$colour-white: rgb(255, 255, 255);
+$colour-grey-dark: rgb(52, 58, 64);
+
 * {
   box-sizing: border-box;
  }
  
- body {
-   font-family: Verdana, sans-serif;
- }
- 
- h1 {
-   text-align: center;
-   font-style: italic;
-   text-shadow: 1px 1px 1px black;
- }
- 
- .board {
-   width: 100%;
-   max-width: 300px;
-   margin: auto;
- }
- 
- .sqr {
-   float: left;
-   width: 33%;
-   height: 100px;
-   border: 1px solid black;
-   text-align: center;
-   line-height: 100px;
-   font-size: 250%;
-   font-weight: bold;
-   background-color: #7180CA;
+body {
+  height: 100vh;
+  width: 100vw;
+  font-family: 'Roboto', Verdana, sans-serif;
+  // background-color: $colour-cream;
+  background: linear-gradient(
+    to right bottom,
+    $colour-cream,
+    darken($colour-cream, 10%)
+  );
+  color: $colour-grey-dark;
 
-   &:hover {
-     background-color: #202D6E;
-   }
- }
+  input, label, select {
+    color: inherit;
+    font-family: inherit;
+    outline: none;
+  }
+}
  
- .bottomRow {
-   margin-bottom: 20px;
- }
+h1 {
+  text-align: center;
+  font-style: italic;
+  text-shadow: 1px 1px 1px $colour-grey-dark;
+  font-family: 'Pacifico', Verdana, sans-serif;
+}
  
- .form-container {
-   clear: left;
-   width: 200px;
-   margin: auto;
-   font-weight: bold;
- }
+.board {
+  width: 100%;
+  max-width: 394px;
+  margin: 0 auto 20px;
+  border: 4px solid $colour-grey-dark;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 130px 130px 130px;
+
+  .sqr {
+    border: 2px solid $colour-grey-dark;
+    text-align: center;
+    line-height: 120px;
+    font-size: 350%;
+    font-weight: bold;
+    color: $colour-amber;
+    background-color: $colour-russet;
+  
+    &:hover {
+      background-color: darken($colour-russet, 10%);
+    }
+  }
+}
  
- .select-identifier {
-   width: 60px;
-   font-size: 125%;
- }
+.form-container {
+  width: 250px;
+  margin: auto;
+  font-weight: bold;
+
+  label {
+    font-size: 120%;
+  }
+
+  #select-identifier {
+    width: 60px;
+    font-size: 150%;
+    margin-left: 5px;
+  }  
+
+  .play-btn {
+    background-color: $colour-russet;
+    color: $colour-white;
+    border: 1px solid $colour-grey-dark;
+    margin-left: 5px;
+    width: 80px;
+    padding: 4px;
+    font-size: 150%;
+    cursor: pointer;
+
+    &:hover {
+      background-color: darken($colour-russet, 10%);
+    }
+  }
+}
  
- .play-btn {
-   margin-left: 5px;
-   width: 60px;
-   font-size: 125%;
-   border-radius: 10px;
- }
- 
- .msg {
-   text-align: center;
-   font-weight: bold;
-   font-size: 125%;
- }
+.msg {
+  text-align: center;
+  font-weight: bold;
+  font-size: 175%;
+}
  

@@ -4,6 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"> 
   <title>Noughts & Crosses Game</title>
 </head>
 
@@ -18,16 +21,16 @@
     <div id="4" class="sqr"></div>
     <div id="5" class="sqr"></div>
     <div id="6" class="sqr"></div>
-    <div id="7" class="sqr bottomRow"></div>
-    <div id="8" class="sqr bottomRow"></div>
-    <div id="9" class="sqr bottomRow"></div>
+    <div id="7" class="sqr"></div>
+    <div id="8" class="sqr"></div>
+    <div id="9" class="sqr"></div>
   </div>
 
   <div class="form-container">
     <form>
-      <label>
+      <label for="select-identifier">
         Player:
-        <select class="select-identifier">
+        <select id="select-identifier" name="select-identifier">
           <option>O</option>
           <option>X</option>
         </select>
