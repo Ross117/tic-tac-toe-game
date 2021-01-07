@@ -12,34 +12,38 @@
 
 <body>
 
-  <h1>Let's play Noughts & Crosses!</h1>
+  <main class="container">
 
-  <div class="board">
-    <div id="1" class="sqr"></div>
-    <div id="2" class="sqr"></div>
-    <div id="3" class="sqr"></div>
-    <div id="4" class="sqr"></div>
-    <div id="5" class="sqr"></div>
-    <div id="6" class="sqr"></div>
-    <div id="7" class="sqr"></div>
-    <div id="8" class="sqr"></div>
-    <div id="9" class="sqr"></div>
-  </div>
+    <h1>Let's play Noughts & Crosses!</h1>
 
-  <div class="form-container">
-    <form>
-      <label for="select-identifier">
-        Player:
-        <select id="select-identifier" name="select-identifier">
-          <option>O</option>
-          <option>X</option>
-        </select>
-      </label>
-      <input type="button" value="Play" class="play-btn">
-    </form>
-  </div>
+    <div class="board">
+      <div id="1" class="sqr"></div>
+      <div id="2" class="sqr"></div>
+      <div id="3" class="sqr"></div>
+      <div id="4" class="sqr"></div>
+      <div id="5" class="sqr"></div>
+      <div id="6" class="sqr"></div>
+      <div id="7" class="sqr"></div>
+      <div id="8" class="sqr"></div>
+      <div id="9" class="sqr"></div>
+    </div>
 
-  <p class="msg"></p>
+    <div class="form-container">
+      <form>
+        <label for="select-identifier">
+          Player:
+          <select id="select-identifier" name="select-identifier" tabindex="1">
+            <option>O</option>
+            <option>X</option>
+          </select>
+        </label>
+        <input type="button" value="Play" class="play-btn" tabindex="2">
+      </form>
+    </div>
+
+    <p class="msg"></p>
+
+  </main>
 
   <script src="../dist/bundle.js"></script>
 

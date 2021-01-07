@@ -35,6 +35,7 @@ const game = (function setupGame() {
       $sqrs.forEach((val) => {
         const sqr = val;
         sqr.removeEventListener('click', userPlay);
+        sqr.classList.remove('clickable');
       });
     }
 
@@ -191,6 +192,7 @@ const game = (function setupGame() {
       $sqrs.forEach((sqr) => {
         const $sqr = sqr;
         $sqr.innerText = '';
+        $sqr.classList.add('clickable');
         $sqr.addEventListener('click', userPlay);
       });
 

@@ -9,7 +9,8 @@ body {
   background: linear-gradient(to right bottom, #ffe2d6, #ffbea3);
   color: #343a40;
 }
-body input, body label, body select {
+
+input, label, select {
   color: inherit;
   font-family: inherit;
   outline: none;
@@ -17,64 +18,84 @@ body input, body label, body select {
 
 h1 {
   text-align: center;
-  font-style: italic;
   text-shadow: 1px 1px 1px #343a40;
   font-family: "Pacifico", Verdana, sans-serif;
+}
+
+.container {
+  height: 95vh;
+  width: 95vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .board {
   width: 100%;
   max-width: 394px;
-  margin: 0 auto 20px;
+  margin-bottom: 20px;
   border: 4px solid #343a40;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 130px 130px 130px;
+  grid-template-rows: 15vh 15vh 15vh;
 }
 .board .sqr {
+  background-color: #af4320;
   border: 2px solid #343a40;
   text-align: center;
-  line-height: 120px;
-  font-size: 350%;
+  line-height: 14vh;
+  font-size: 7vh;
   font-weight: bold;
   color: #fba86c;
-  background-color: #af4320;
+}
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .board .sqr {
+    float: left;
+    width: 33.3%;
+    height: 15vh;
+  }
 }
 .board .sqr:hover {
   background-color: #843218;
 }
+.board .clickable {
+  cursor: pointer;
+}
 
 .form-container {
-  width: 250px;
-  margin: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   font-weight: bold;
-}
-.form-container label {
-  font-size: 120%;
+  font-size: 2.5vh;
 }
 .form-container #select-identifier {
   width: 60px;
-  font-size: 150%;
   margin-left: 5px;
+  font-size: 2.5vh;
+  cursor: pointer;
 }
 .form-container .play-btn {
   background-color: #af4320;
-  color: white;
+  color: #fba86c;
   border: 1px solid #343a40;
   margin-left: 5px;
-  width: 80px;
+  width: 60px;
   padding: 4px;
-  font-size: 150%;
+  font-size: 2.5vh;
   cursor: pointer;
 }
 .form-container .play-btn:hover {
   background-color: #843218;
+  transform: scale(1.1);
 }
 
 .msg {
-  text-align: center;
   font-weight: bold;
-  font-size: 175%;
+  font-size: 3vh;
+  height: 3.5vh;
 }
 
 /*# sourceMappingURL=style.css.map */

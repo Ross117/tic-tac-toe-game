@@ -1,7 +1,6 @@
 $colour-russet: rgb(175, 67, 32);
 $colour-amber: rgb(251, 168, 108);
 $colour-cream: rgb(255, 226, 214);
-$colour-white: rgb(255, 255, 255);
 $colour-grey-dark: rgb(52, 58, 64);
 
 * {
@@ -12,86 +11,105 @@ body {
   height: 100vh;
   width: 100vw;
   font-family: 'Roboto', Verdana, sans-serif;
-  // background-color: $colour-cream;
   background: linear-gradient(
     to right bottom,
     $colour-cream,
     darken($colour-cream, 10%)
   );
   color: $colour-grey-dark;
+}
 
-  input, label, select {
-    color: inherit;
-    font-family: inherit;
-    outline: none;
-  }
+input, label, select {
+  color: inherit;
+  font-family: inherit;
+  outline: none;
 }
  
 h1 {
   text-align: center;
-  font-style: italic;
   text-shadow: 1px 1px 1px $colour-grey-dark;
   font-family: 'Pacifico', Verdana, sans-serif;
+}
+
+.container {
+  height: 95vh;
+  width: 95vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
  
 .board {
   width: 100%;
   max-width: 394px;
-  margin: 0 auto 20px;
+  margin-bottom: 20px;
   border: 4px solid $colour-grey-dark;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 130px 130px 130px;
+  grid-template-rows: 15vh 15vh 15vh;
 
   .sqr {
+    background-color: $colour-russet;
     border: 2px solid $colour-grey-dark;
     text-align: center;
-    line-height: 120px;
-    font-size: 350%;
+    line-height: 14vh;
+    font-size: 7vh;
     font-weight: bold;
     color: $colour-amber;
-    background-color: $colour-russet;
-  
+
+    // target IE10 & IE11 only
+    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+      float: left;
+      width: 33.3%;
+      height: 15vh;
+    }
+    
     &:hover {
       background-color: darken($colour-russet, 10%);
     }
   }
+
+  .clickable {
+    cursor: pointer;
+  }
 }
  
 .form-container {
-  width: 250px;
-  margin: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   font-weight: bold;
-
-  label {
-    font-size: 120%;
-  }
+  font-size: 2.5vh;
 
   #select-identifier {
     width: 60px;
-    font-size: 150%;
     margin-left: 5px;
-  }  
+    font-size: 2.5vh;
+    cursor: pointer;
+  }
 
   .play-btn {
     background-color: $colour-russet;
-    color: $colour-white;
+    color: $colour-amber;
     border: 1px solid $colour-grey-dark;
     margin-left: 5px;
-    width: 80px;
+    width: 60px;
     padding: 4px;
-    font-size: 150%;
+    font-size: 2.5vh;
     cursor: pointer;
 
     &:hover {
       background-color: darken($colour-russet, 10%);
+      transform: scale(1.1);
     }
   }
 }
  
 .msg {
-  text-align: center;
   font-weight: bold;
-  font-size: 175%;
+  font-size: 3vh;
+  height: 3.5vh;
 }
  
