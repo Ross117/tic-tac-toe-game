@@ -2,14 +2,23 @@ $colour-russet: rgb(175, 67, 32);
 $colour-amber: rgb(251, 168, 108);
 $colour-cream: rgb(255, 226, 214);
 $colour-grey-dark: rgb(52, 58, 64);
+$font-size: 3vh;
 
-* {
-  box-sizing: border-box;
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0; 
  }
+
+html {
+  min-height: 100vh;
+  min-width: 100vw;
+}
  
 body {
-  height: 100vh;
-  width: 100vw;
+  box-sizing: border-box;
   font-family: 'Roboto', Verdana, sans-serif;
   background: linear-gradient(
     to right bottom,
@@ -32,8 +41,9 @@ h1 {
 }
 
 .container {
-  height: 95vh;
+  height: 100vh;
   width: 95vw;
+  margin: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -43,6 +53,7 @@ h1 {
 .board {
   width: 100%;
   max-width: 394px;
+  margin-top: 20px;
   margin-bottom: 20px;
   border: 4px solid $colour-grey-dark;
   display: grid;
@@ -80,13 +91,14 @@ h1 {
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  margin-bottom: 20px;
   font-weight: bold;
-  font-size: 2.5vh;
+  font-size: $font-size;
 
   #select-identifier {
     width: 60px;
     margin-left: 5px;
-    font-size: 2.5vh;
+    font-size: $font-size;
     cursor: pointer;
   }
 
@@ -95,9 +107,9 @@ h1 {
     color: $colour-amber;
     border: 1px solid $colour-grey-dark;
     margin-left: 5px;
-    width: 60px;
+    width: 75px;
     padding: 4px;
-    font-size: 2.5vh;
+    font-size: $font-size;
     cursor: pointer;
 
     &:hover {
@@ -109,7 +121,7 @@ h1 {
  
 .msg {
   font-weight: bold;
-  font-size: 3vh;
+  font-size: $font-size;
   height: 3.5vh;
 }
  
