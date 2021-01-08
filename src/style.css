@@ -83,7 +83,6 @@ h1 {
   font-size: 3vh;
 }
 .form-container #select-identifier {
-  width: 60px;
   margin-left: 5px;
   font-size: 3vh;
   cursor: pointer;
@@ -93,7 +92,6 @@ h1 {
   color: #fba86c;
   border: 1px solid #343a40;
   margin-left: 5px;
-  width: 75px;
   padding: 4px;
   font-size: 3vh;
   cursor: pointer;
