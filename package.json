@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "build": "webpack --mode development",
-    "eslint": "eslint ./src/index.js",
+    "lint": "eslint ./src/index.js",
     "compile:sass": "sass --watch sass/style.scss src/style.css",
     "start": "webpack serve",
     "test": "echo \"Error: no test specified\" && exit 1"
