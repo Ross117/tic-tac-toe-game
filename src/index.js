@@ -1,6 +1,8 @@
 "use strict";
 
+import "core-js/features/array/flat";
 import "core-js/features/array/from";
+import "core-js/features/array/includes";
 import "./style.css";
 
 const game = (function setupGame() {
