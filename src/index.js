@@ -28,14 +28,13 @@ const game = (function setupGame() {
     let winningCombo = false;
     let i = 1;
 
-    if (playerArr.length < 3) return false;
+    if (playerArr.length < 3) return winningCombo;
 
     do {
       if (
-        // refactor using array.includes
-        playerArr.indexOf(winningCombos[i - 1][0]) !== -1 &&
-        playerArr.indexOf(winningCombos[i - 1][1]) !== -1 &&
-        playerArr.indexOf(winningCombos[i - 1][2]) !== -1
+        playerArr.includes(winningCombos[i - 1][0]) &&
+        playerArr.includes(winningCombos[i - 1][1]) &&
+        playerArr.includes(winningCombos[i - 1][2])
       ) {
         winningCombo = true;
       } else i += 1;
@@ -57,19 +56,22 @@ const game = (function setupGame() {
   const computerPlay = () => {
     let computerSelection;
 
+    // get a randon integer lower than a specified maximum
+    const getRandomInt = (max) => Math.floor(Math.random() * max);
+
     // check if a winning move is available
-    const pickWinningCombo = (playerHist) => {
+    const pickWinningCombo = (playerHist, gameOptions) => {
       let nxtMv = null;
       let i = 1;
 
       do {
         let counter = 0;
         winningCombos[i - 1].forEach((val) => {
-          if (playerHist.indexOf(val) !== -1) counter += 1;
+          if (playerHist.includes(val)) counter += 1;
         });
         if (counter === 2) {
-          const availableMvs = winningCombos[i - 1].filter(
-            (val) => state.options.indexOf(val) !== -1
+          const availableMvs = winningCombos[i - 1].filter((val) =>
+            gameOptions.includes(val)
           );
           if (availableMvs.length === 1) [nxtMv] = availableMvs;
         }
@@ -79,117 +81,228 @@ const game = (function setupGame() {
       return nxtMv;
     };
 
-    // if no priority moves are available, check if a move is availble  
-    // which gives the player more than one way to win on the next turn
-    const pickFork = (playerHist) => {
-      let nxtMv = null;
+    // identify winning combos which aren't blocked & where player has a foothold
+    const identifyTwoInARowOptions = (playerHist, gameOptions) => {
+      const options = [];
       let i = 1;
-      let availableMvs = [];
-      const choices = [];
 
-      // pick the move which leaves the most winning combinations open
-      const pickBestOption = (options) => {
-        const countArr = [];
+      if (playerHist.length === 0) return options;
 
-        options.forEach((val) => {
-          let counter = 0;
-          options.forEach((_value, index) => {
-            if (val === options[index]) counter += 1;
-          });
-          countArr.push([val, counter]);
+      do {
+        let counter = 0;
+        winningCombos[i - 1].forEach((val) => {
+          if (playerHist.includes(val)) counter += 1;
+        });
+        if (counter === 1) {
+          let availableMvs = winningCombos[i - 1].filter((val) =>
+            gameOptions.includes(val)
+          );
+          if (availableMvs.length === 2) {
+            options.push(...availableMvs);
+          }
+        }
+        i += 1;
+      } while (i <= winningCombos.length);
+
+      return options;
+    };
+
+    const identifyForks = (playerHist, gameOptions) => {
+      const countOfOptions = [];
+
+      const options = identifyTwoInARowOptions(playerHist, gameOptions);
+
+      if (options.length === 0) return [];
+
+      options.forEach((val) => {
+        let counter = 0;
+        options.forEach((_val, index) => {
+          if (val === options[index]) counter += 1;
+        });
+        countOfOptions.push([val, counter]);
+      });
+
+      const forks = [];
+
+      countOfOptions
+        .filter((val) => val[1] > 1)
+        .flat()
+        .filter((_val, ind) => ind % 2 === 0)
+        .forEach((val) => {
+          if (!forks.includes(val)) {
+            forks.push(val);
+          }
         });
 
-        const forks = countArr.filter((val) => val[1] > 1);
+      return forks;
+    };
 
-        if (forks.length >= 1) return forks[0][0];
+    // check if a move is availble which gives the player more than one way to win on the next turn
+    const pickFork = (playerHist, player) => {
+      let nxtMv = null;
 
-        return null;
-      };
+      const forks = identifyForks(playerHist, state.options);
 
-      if (playerHist.length > 0) {
-        // identify winning combos which aren't blocked & where player has a foothold
-        do {
-          let counter = 0;
-          winningCombos[i - 1].forEach((val) => {
-            if (playerHist.indexOf(val) !== -1) counter += 1;
+      if (forks.length === 0) return nxtMv;
+
+      if (player === "computer" && forks.length >= 1) {
+        nxtMv = forks[getRandomInt(forks.length)];
+        // this is the computer in blocking mode: if the user has one fork available, block it
+      } else if (player === "user" && forks.length === 1) {
+        nxtMv = forks[0];
+        // if the user has more than one fork available, block all forks in any way which
+        // simultaneously allows the computer to create 2 in a row
+      } else if (player === "user" && forks.length > 1) {
+        const twoInARowOptions = identifyTwoInARowOptions(
+          state.moves.user,
+          state.options
+        );
+
+        const potentialMoves = [];
+
+        forks.forEach((fork) => {
+          // in selecting one fork, therefore taking it out as an option, does the computer eliminate the other fork(s)?
+          const modGameOptions = state.options.filter((option) => {
+            return option !== fork;
           });
-          if (counter === 1) {
-            availableMvs = winningCombos[i - 1].filter(
-              (val) => state.options.indexOf(val) !== -1
-            );
-            if (availableMvs.length === 2) {
-              choices.push(...availableMvs);
-            }
+          if (
+            identifyForks(playerHist, modGameOptions) === null &&
+            twoInARowOptions.includes(fork)
+          ) {
+            potentialMoves.push(fork);
           }
-          i += 1;
-        } while (i <= winningCombos.length);
+        });
 
-        if (choices.length >= 1) {
-          nxtMv = pickBestOption(choices);
+        if (potentialMoves.length > 0) {
+          nxtMv = potentialMoves[getRandomInt(potentialMoves.length)];
         }
-      } 
+      }
+
+      return nxtMv;
+    };
+
+    const pickTwoInARow = () => {
+      let nxtMv = null;
+      const options = identifyTwoInARowOptions(
+        state.moves.computer,
+        state.options
+      );
+
+      if (options.length === 0) return nxtMv;
+
+      const potentialMoves = [];
+
+      options.forEach((option) => {
+        const modGameOptions = state.options.filter((val) => {
+          return val !== option;
+        });
+
+        const modComputerMoves = state.moves.computer.map((move) => move);
+        modComputerMoves.push(option);
+
+        // if the option was selected, what would the winning move be?
+        const winningMove = pickWinningCombo(modComputerMoves, modGameOptions);
+        // check that by blocking the winning move, the user can't simultaneously create a fork
+        if (
+          !identifyForks(state.moves.user, modGameOptions).includes(winningMove)
+        ) {
+          potentialMoves.push(option);
+        }
+      });
+
+      if (potentialMoves.length > 0) {
+        nxtMv = potentialMoves[getRandomInt(potentialMoves.length)];
+      }
 
       return nxtMv;
     };
 
     const pickOppositeCorner = () => {
       let nxtMv = null;
-      const corners = [[1, 9], [3, 7]];
+      const corners = [
+        [1, 9],
+        [3, 7],
+      ];
       const options = [];
 
-      corners.forEach(val => {
-        if (state.options.includes(val[0]) && state.moves.user.includes(val[1])) {
-          options.push(val[0]);
-        } else if (state.options.includes(val[1]) && state.moves.user.includes(val[0])) {
-          options.push(val[1]);
+      const checkForOpposites = ([corner1, corner2]) => {
+        if (
+          state.options.includes(corner1) &&
+          state.moves.user.includes(corner2)
+        ) {
+          options.push(corner1);
+        }
+      };
+
+      corners.forEach((val) => {
+        checkForOpposites([val[0], val[1]]);
+        checkForOpposites([val[1], val[0]]);
+      });
+
+      if (options.length > 0) {
+        nxtMv = options[getRandomInt(options.length)];
+      }
+
+      return nxtMv;
+    };
+
+    const pickCornerOrSide = (moves) => {
+      let nxtMv = null;
+      const options = [];
+
+      moves.forEach((move) => {
+        if (state.options.includes(move)) {
+          options.push(move);
         }
       });
 
       if (options.length > 0) {
-        nxtMv = options.length === 1 ? options[0] : options[Math.round(Math.random())];
+        nxtMv = options[getRandomInt(options.length)];
       }
 
       return nxtMv;
-    }
+    };
 
-    if (state.moves.computer.length === 0 && state.moves.user.length === 0) {
-      // 1. at the start of the game, 5 leaves the most winning combos open - ???maybe remove this???
-      computerSelection = 5;
-    } else if (pickWinningCombo(state.moves.computer) !== null) {
-      // 2. if computer is just 1 square away, and that square is available, pick that
-      computerSelection = pickWinningCombo(state.moves.computer);
-      // 3. need to block user if they're 1 square away from winning
-    } else if (pickWinningCombo(state.moves.user) !== null) {
-      computerSelection = pickWinningCombo(state.moves.user);
-      // 4. pick the option which leaves the computer with more than 1 way of winning on the next move
-    } else if (pickFork(state.moves.computer) !== null) {
-      computerSelection = pickFork(state.moves.computer);
-      // 5. block any opportunity for the user to create more than 1 way of winning
-    } else if (pickFork(state.moves.user) !== null) {
-      computerSelection = pickFork(state.moves.user);
+    // 1. if computer is just 1 square away, and that square is available, pick that
+    if (pickWinningCombo(state.moves.computer, state.options) !== null) {
+      computerSelection = pickWinningCombo(state.moves.computer, state.options);
+      // 2. need to block user if they're 1 square away from winning
+    } else if (pickWinningCombo(state.moves.user, state.options) !== null) {
+      computerSelection = pickWinningCombo(state.moves.user, state.options);
+      // 3. pick the option which leaves the computer with more than 1 way of winning on the next move
+    } else if (pickFork(state.moves.computer, "computer") !== null) {
+      computerSelection = pickFork(state.moves.computer, "computer");
+      // 4. block any opportunity for the user to create more than 1 way of winning
+    } else if (pickFork(state.moves.user, "user") !== null) {
+      computerSelection = pickFork(state.moves.user, "user");
+      // 5. create a 2 in a row, as long as it doesn't let the user create a fork
+    } else if (pickTwoInARow() !== null) {
+      computerSelection = pickTwoInARow();
       // 6. pick the centre
     } else if (state.options.includes(5)) {
       computerSelection = 5;
+      // 7. pick a corner opposite to a corner taken by the user
     } else if (pickOppositeCorner() !== null) {
       computerSelection = pickOppositeCorner();
-    }  
-    // ----------------------
+      // 8. pick any corner
+    } else if (pickCornerOrSide([1, 3, 7, 9]) !== null) {
+      computerSelection = pickCornerOrSide([1, 3, 7, 9]);
+      // 9. pick any side
+    } else {
+      computerSelection = pickCornerOrSide([2, 4, 6, 8]);
+    }
 
-    // TODO: handle else case
-    
-    // ----------------------
-    
-    // 7. update board
+    // update board
     document.querySelector(`[id='${computerSelection}']`).innerText =
       state.identifers.computer;
-    // 8. update computerPlays array
+    // update computerPlays array
     state.moves.computer.push(computerSelection);
-    // 9. Check if computer has won
+    // check if computer has won
     if (checkforWinner("computer", state.moves.computer)) return;
-    // 10. remove selection from options array
+    // remove selection from options array
     const ind = state.options.indexOf(computerSelection);
     state.options.splice(ind, 1);
-    // 11. check if the game's over
+    // check if the game's over
     if (state.options.length === 0) $msg.innerText = "Match drawn";
     else $msg.innerText = "Your turn";
   };
@@ -198,9 +311,9 @@ const game = (function setupGame() {
     const $targetDiv = event.target;
 
     // 1. update board
-    if ($targetDiv.innerText === "")
+    if ($targetDiv.innerText === "") {
       $targetDiv.innerText = state.identifers.user;
-    else return;
+    } else return;
 
     const numericVal = parseInt($targetDiv.id, 10);
     // 2. update userPlays array
@@ -211,8 +324,9 @@ const game = (function setupGame() {
     const ind = state.options.indexOf(numericVal);
     state.options.splice(ind, 1);
     // 5. check if the game is drawn. If not, make the computer play.
-    if (state.options.length === 0) $msg.innerText = "Match drawn";
-    else {
+    if (state.options.length === 0) {
+      $msg.innerText = "Match drawn";
+    } else {
       $msg.innerText = "";
       computerPlay();
     }
